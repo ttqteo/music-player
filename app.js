@@ -125,24 +125,24 @@ const app = {
                             </li>
                             <li class="option-item">
                                 <div class="option-link option-item-heart">
-                                    ${this.isHeart[index] === true ? '<i class="fas fa-heart"></i>' : '<i class="far fa-heart"></i>'}
+                                ${song.heart === true ? '<i class="fas fa-heart"></i>' : '<i class="far fa-heart"></i>'}
                                 </div>
                             </li>
-                            
                         </ul>
                     </div>
                 </div>
             `
         })
+        
         playlist.innerHTML = htmls.join('');
         this.setConfig('currentIndex', this.currentIndex)
     },
     defineProperties: function() {
-        Object.defineProperty(this, 'currentSong', {
+        Object.defineProperty(this, "currentSong", {
             get: function() {
                 return this.songs[this.currentIndex]
             }
-        })
+        });
     },
     handleEvents: function() {
         const _this = this
@@ -231,12 +231,13 @@ const app = {
         // Lắng nghe hành vi click ở playlist
         playlist.onclick = function(e) {
             const songNode = e.target.closest('.song')
+
             if (e.target.closest('.option-list')) {
-                _this.isHeart[Number(songNode.dataset.index)] = !_this.isHeart[Number(songNode.dataset.index)]
-                _this.setConfig('isHeart', _this.isHeart)
                 if (e.target.closest('.option-item-heart')) {
+                    _this.isHeart[Number(songNode.dataset.index)] = !_this.isHeart[Number(songNode.dataset.index)]
+                    _this.setConfig('isHeart', _this.isHeart)
                     if (_this.isHeart[Number(songNode.dataset.index)]) 
-                        e.target.closest('.option-item-heart').innerHTML = `<i class="fas fa-heart heart"></i>`;
+                        e.target.closest('.option-item-heart').innerHTML = `<i class="fas fa-heart"></i>`;
                     else 
                         e.target.closest('.option-item-heart').innerHTML = `<i class="far fa-heart"></i>`;
                 }
@@ -249,20 +250,18 @@ const app = {
         }
     },
     loadCurrentSong: function() {
-        heading.textContent = this.currentSong.name
-        cdThumb.style.backgroundImage = `url('${this.currentSong.image}')`
-        audio.src = this.currentSong.path
+        heading.textContent = this.currentSong.name;
+        cdThumb.style.backgroundImage = `url('${this.currentSong.image}')`;
+        audio.src = this.currentSong.path;
     },
     loadConfig: function(){
-        this.isRandom = this.config.isRandom
-        this.isRepeat = this.config.isRepeat
-        this.currentIndex = this.config.currentIndex
-        this.isHeart = this.config.isHeart
-
-        randomBtn.classList.toggle('active', this.isRandom)
-        repeatBtn.classList.toggle('active', this.isRepeat)
+        // Cách 1 lỗi do những dữ kiện ban đầu sẽ không được config (khi chạy lần đầu)
+        // this.isRandom = this.config.isRandom
+        // this.isRepeat = this.config.isRepeat
+        // if (typeof this.config.currentIndex !== "undefined") this.currentIndex = this.config.currentIndex
+        // this.isHeart = this.config.isHeart
         // Cách 2: nhưng không đảm bảo vì sau này config nhiều
-        // Object.assign(this, this.config)
+        Object.assign(this, this.config)
     },
     nextSong: function () {
         this.currentIndex++
@@ -307,6 +306,9 @@ const app = {
 
         // Render playlist
         this.render()
+        
+        randomBtn.classList.toggle('active', this.isRandom)
+        repeatBtn.classList.toggle('active', this.isRepeat)
     }
 }
 app.start()
