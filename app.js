@@ -16,8 +16,6 @@ const randomBtn = $('.btn-random')
 const repeatBtn = $('.btn-repeat')
 const playlist = $('.playlist')
 
-const heartBtn = $('.option-item-heart')
-
 const app = {
     currentIndex : 0,
     isPlaying: false,
@@ -251,7 +249,6 @@ const app = {
         }
     },
     loadCurrentSong: function() {
-        // this.setConfig('currentIndex', this.currentIndex)
         heading.textContent = this.currentSong.name
         cdThumb.style.backgroundImage = `url('${this.currentSong.image}')`
         audio.src = this.currentSong.path
@@ -261,6 +258,9 @@ const app = {
         this.isRepeat = this.config.isRepeat
         this.currentIndex = this.config.currentIndex
         this.isHeart = this.config.isHeart
+
+        randomBtn.classList.toggle('active', this.isRandom)
+        repeatBtn.classList.toggle('active', this.isRepeat)
         // Cách 2: nhưng không đảm bảo vì sau này config nhiều
         // Object.assign(this, this.config)
     },
@@ -307,10 +307,6 @@ const app = {
 
         // Render playlist
         this.render()
-
-        // Kiểm tra trạng thái ban đầu
-        randomBtn.classList.toggle('active', this.isRandom)
-        repeatBtn.classList.toggle('active', this.isRepeat)
     }
 }
 app.start()
