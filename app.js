@@ -16,6 +16,8 @@ const randomBtn = $('.btn-random')
 const repeatBtn = $('.btn-repeat')
 const playlist = $('.playlist')
 
+const titleHeading = $('head title')
+
 const app = {
     currentIndex : 0,
     isPlaying: false,
@@ -133,8 +135,8 @@ const app = {
                 </div>
             `
         })
-        
         playlist.innerHTML = htmls.join('');
+        
         this.setConfig('currentIndex', this.currentIndex)
     },
     defineProperties: function() {
@@ -149,7 +151,7 @@ const app = {
 
         // Xử lý CD quay và dừng
         const cdThumbAnimate = cdThumb.animate([
-            {transform: 'rotate(360deg'}
+            {transform: 'rotate(360deg)'}
         ], {
             duration: 10000,
             iterations: Infinity
@@ -176,16 +178,19 @@ const app = {
             _this.isPlaying = true
             player.classList.add('playing')
             cdThumbAnimate.play()
+            titleHeading.innerHTML = _this.songs.map((song,index) => {
+                return `${index === _this.currentIndex ? `${song.name.toUpperCase()} - ${song.singer}` : ''}`
+            }).join('')
         }
         // Khi song bị pause
         audio.onpause = function() {
             _this.isPlaying = false
             player.classList.remove('playing')
             cdThumbAnimate.pause()
+            titleHeading.innerHTML = `BIGBANG PLAYLIST`
         }
         // Tiến độ bài hát thay đổi
         audio.ontimeupdate = function() {
-
             if (audio.duration) {
                 const progressPercent = Math.floor(audio.currentTime / audio.duration * 100);
                 progress.value = progressPercent;
