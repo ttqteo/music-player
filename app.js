@@ -106,6 +106,7 @@ const app = {
             `
         })
         playlist.innerHTML = htmls.join('');
+        this.setConfig('currentIndex', this.currentIndex)
     },
     defineProperties: function() {
         Object.defineProperty(this, 'currentSong', {
@@ -216,6 +217,7 @@ const app = {
         }
     },
     loadCurrentSong: function() {
+        // this.setConfig('currentIndex', this.currentIndex)
         heading.textContent = this.currentSong.name
         cdThumb.style.backgroundImage = `url('${this.currentSong.image}')`
         audio.src = this.currentSong.path
@@ -223,6 +225,7 @@ const app = {
     loadConfig: function(){
         this.isRandom = this.config.isRandom
         this.isRepeat = this.config.isRepeat
+        this.currentIndex = this.config.currentIndex
         // Cách 2: nhưng không đảm bảo vì sau này config nhiều
         // Object.assign(this, this.config)
     },
