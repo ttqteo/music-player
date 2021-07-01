@@ -173,10 +173,6 @@ header h2 {
     background-color: var(--primary-color);
 }
 
-.song:active {
-    opacity: 0.8;
-}
-
 .song.active .option,
 .song.active .title,
 .song.active .author {
@@ -212,7 +208,6 @@ header h2 {
 
 .song .option {
     position: relative;
-    /* padding: 16px 8px; */
     color: #999;
     font-size: 18px;
     border-radius: 50%;
@@ -242,8 +237,8 @@ header h2 {
     display: none;
 }
 
-.option-item:hover {
-    opacity: 0.6;
+.option-item:active {
+    opacity: 0.8;
 }
 
 .option-link {

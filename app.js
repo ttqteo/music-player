@@ -116,7 +116,7 @@ const app = {
                         <i class="fas fa-ellipsis-h"></i>
                         <ul class="option-list">
                             <li class="option-item">
-                                <a href="#" class="option-link">
+                                <a href="#" class="option-link option-item-share">
                                     <i class="fas fa-share-alt"></i>
                                 </a>
                             </li>
@@ -245,6 +245,8 @@ const app = {
                         e.target.closest('.option-item-heart').innerHTML = `<i class="fas fa-heart"></i>`;
                     else 
                         e.target.closest('.option-item-heart').innerHTML = `<i class="far fa-heart"></i>`;
+                } else if (e.target.closest('.option-item-share')) {
+                    alert('Coming soon..')
                 }
             } else {
                     _this.currentIndex = Number(songNode.dataset.index)
