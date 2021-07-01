@@ -16,71 +16,84 @@ const randomBtn = $('.btn-random')
 const repeatBtn = $('.btn-repeat')
 const playlist = $('.playlist')
 
+const heartBtn = $('.option-item-heart')
+
 const app = {
     currentIndex : 0,
     isPlaying: false,
     isRandom: false,
     isRepeat: false,
+    isHeart: [false, false, false, false, false, false, false, false, false, false],
     config: JSON.parse(localStorage.getItem(PLAYER_STORAGE_KEY)) || {},
     songs: [
         {
             name: 'Bad Boy',
             singer: 'BIGBANG',
             path: './assets/music/song1.mp3',
+            youtube: 'https://youtu.be/1qnV55LUFVM',
             image: './assets/img/song1.jpg'
         },
         {
             name: 'Blue',
             singer: 'BIGBANG',
             path: './assets/music/song2.mp3',
+            youtube: 'https://youtu.be/2GRP1rkE4O0',
             image: './assets/img/song1.jpg'
         },
         {
             name: 'My Heaven',
             singer: 'BIGBANG',
             path: './assets/music/song3.mp3',
+            youtube: 'https://youtu.be/Hjc03nySrbw',
             image: './assets/img/cover.jpg'
         },
         {
             name: 'Ms. Liar',
             singer: 'BIGBANG',
             path: './assets/music/song4.mp3',
+            youtube: '#',
             image: './assets/img/cover.jpg'
         },
         {
             name: 'Let Me Hear Your Voice',
             singer: 'BIGBANG',
             path: './assets/music/song5.mp3',
+            youtube: 'https://youtu.be/oQjcJBGIFsA',
             image: './assets/img/song5.jpg'
         },
         {
             name: 'Haru Haru',
             singer: 'BIGBANG',
             path: './assets/music/song6.mp3',
+            youtube: 'https://youtu.be/MzCbEdtNbJ0',
             image: './assets/img/song6.jpg'
         },
         {
             name: 'Missing You',
             singer: 'BIGBANG',
             path: './assets/music/song7.mp3',
+            youtube: '#',
             image: './assets/img/song10.jpg'
         },
         {
             name: 'Eyes, Nose, Lips',
             singer: 'TAEYANG',
             path: './assets/music/song8.mp3',
+            youtube: 'https://youtu.be/UwuAPyOImoI',
             image: './assets/img/song8.jpg'
         },
         {
             name: 'Ego',
             singer: 'BIGBANG',
             path: './assets/music/song9.mp3',
+            youtube: '#',
             image: './assets/img/cover.jpg'
         },
         {
             name: 'Crooked',
             singer: 'G-DRAGON',
             path: './assets/music/song10.mp3',
+            youtube: 'https://youtu.be/RKhsHGfrFmY',
             image: './assets/img/song10.jpg'
         }
     ],
@@ -101,6 +114,24 @@ const app = {
                     </div>
                     <div class="option">
                         <i class="fas fa-ellipsis-h"></i>
+                        <ul class="option-list">
+                            <li class="option-item">
+                                <a href="#" class="option-link">
+                                    <i class="fas fa-share-alt"></i>
+                                </a>
+                            </li>
+                            <li class="option-item">
+                                <a ${song.youtube === '' ? '' : 'target="popup"' } href="${song.youtube}" class="option-link">
+                                    <i class="fab fa-youtube"></i>
+                                </a>
+                            </li>
+                            <li class="option-item">
+                                <div class="option-link option-item-heart">
+                                    ${this.isHeart[index] === true ? '<i class="fas fa-heart"></i>' : '<i class="far fa-heart"></i>'}
+                                </div>
+                            </li>
+                            
+                        </ul>
                     </div>
                 </div>
             `
@@ -156,6 +187,7 @@ const app = {
         }
         // Tiến độ bài hát thay đổi
         audio.ontimeupdate = function() {
+
             if (audio.duration) {
                 const progressPercent = Math.floor(audio.currentTime / audio.duration * 100);
                 progress.value = progressPercent;
@@ -200,19 +232,21 @@ const app = {
         }
         // Lắng nghe hành vi click ở playlist
         playlist.onclick = function(e) {
-            const songNode = e.target.closest('.song:not(.active)')
-            if (songNode || e.target.closest('.option')) {
-                // Xử lý khi click vào song
-                if (songNode) {
+            const songNode = e.target.closest('.song')
+            if (e.target.closest('.option-list')) {
+                _this.isHeart[Number(songNode.dataset.index)] = !_this.isHeart[Number(songNode.dataset.index)]
+                _this.setConfig('isHeart', _this.isHeart)
+                if (e.target.closest('.option-item-heart')) {
+                    if (_this.isHeart[Number(songNode.dataset.index)]) 
+                        e.target.closest('.option-item-heart').innerHTML = `<i class="fas fa-heart heart"></i>`;
+                    else 
+                        e.target.closest('.option-item-heart').innerHTML = `<i class="far fa-heart"></i>`;
+                }
+            } else {
                     _this.currentIndex = Number(songNode.dataset.index)
                     _this.loadCurrentSong()
                     _this.render()
                     audio.play()
-                }
-                // Xử lý khi bấm vào nút option (ba chấm)
-                if (e.target.closest('.option')) {
-
-                }
             }
         }
     },
@@ -226,6 +260,7 @@ const app = {
         this.isRandom = this.config.isRandom
         this.isRepeat = this.config.isRepeat
         this.currentIndex = this.config.currentIndex
+        this.isHeart = this.config.isHeart
         // Cách 2: nhưng không đảm bảo vì sau này config nhiều
         // Object.assign(this, this.config)
     },

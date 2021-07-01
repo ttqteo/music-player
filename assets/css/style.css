@@ -44,6 +44,7 @@ html {
     padding: 16px 16px 14px;
     background-color: #fff;
     border-bottom: 1px solid #ebebeb;
+    z-index: 1;
 }
 
 /* Header */
@@ -93,11 +94,26 @@ header h2 {
     color: #666;
     padding: 18px;
     font-size: 18px;
+    width: 59px;
+    text-align: center;
     cursor: pointer;
 }
 
 .control .btn.active {
     color: var(--primary-color);
+}
+
+.btn-repeat:hover,
+.btn-prev:hover,
+.btn-next:hover,
+.btn-random:hover {
+    background-color: #eee;
+    color: var(--text-color);
+}
+
+.control .btn:hover {
+    opacity: 0.8;
+    border-radius: 50%;
 }
 
 .control .btn-toggle-play {
@@ -115,11 +131,12 @@ header h2 {
 .progress {
     width: 100%;
     -webkit-appearance: none;
-    height: 6x;
+    height: 8px;
+    border-radius: 5px;
     background: #d3d3d3;
     outline: none;
-    opacity: 0.7;
-    -webkit-transition: 0.2s;
+    opacity: 0.8;
+    -webkit-transition: 0.1s;
     transition: opacity 0.2s;
     cursor: pointer;
 }
@@ -127,8 +144,9 @@ header h2 {
 .progress::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 12px;
-    height: 6px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
     background-color: var(--primary-color);
     cursor: pointer;
 }
@@ -156,13 +174,17 @@ header h2 {
 }
 
 .song:active {
-    opacity: 0.6;
+    opacity: 0.8;
 }
 
 .song.active .option,
 .song.active .title,
 .song.active .author {
     color: #fff;
+}
+
+.song.active .option {
+    background-color: rgba(33, 88, 151, 0.5);
 }
 
 .song .thumb {
@@ -189,7 +211,48 @@ header h2 {
 }
 
 .song .option {
-    padding: 16px 8px;
+    position: relative;
+    /* padding: 16px 8px; */
     color: #999;
     font-size: 18px;
+    border-radius: 50%;
+    display: flex;
+    padding: 10px;
+}
+
+/* Option list */
+
+.option:hover .option-list {
+    display: flex;
+}
+
+.option-list {
+    position: absolute;
+    align-items: center;
+    justify-content: space-around;
+    list-style: none;
+    background-color: #fff;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 120px;
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    display: none;
+}
+
+.option-item:hover {
+    opacity: 0.6;
+}
+
+.option-link {
+    text-decoration: none;
+    color: var(--primary-color);
+    padding: 5px;
+    font-size: 18px;
+}
+
+.option-link .heart {
+    color: var(--primary-color);
 }
