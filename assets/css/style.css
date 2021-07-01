@@ -97,23 +97,23 @@ header h2 {
     width: 59px;
     text-align: center;
     cursor: pointer;
+    border-radius: 50%;
 }
 
 .control .btn.active {
     color: var(--primary-color);
 }
 
-.btn-repeat:hover,
-.btn-prev:hover,
-.btn-next:hover,
-.btn-random:hover {
+.btn-repeat:active,
+.btn-prev:active,
+.btn-next:active,
+.btn-random:active {
     background-color: #eee;
     color: var(--text-color);
 }
 
-.control .btn:hover {
+.control .btn:active {
     opacity: 0.8;
-    border-radius: 50%;
 }
 
 .control .btn-toggle-play {
@@ -217,7 +217,11 @@ header h2 {
 
 /* Option list */
 
-.option:hover .option-list {
+/* .option:hover .option-list {
+    display: flex;
+} */
+
+.option.active .option-list{
     display: flex;
 }
 
@@ -230,7 +234,7 @@ header h2 {
     right: 0;
     top: 0;
     height: 100%;
-    width: 120px;
+    width: 152px;
     border-radius: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
     border: 1px solid rgba(0, 0, 0, 0.05);

@@ -15,6 +15,7 @@ const prevBtn = $('.btn-prev')
 const randomBtn = $('.btn-random')
 const repeatBtn = $('.btn-repeat')
 const playlist = $('.playlist')
+const optionBtn = $('.option')
 
 const titleHeading = $('head title')
 
@@ -23,6 +24,7 @@ const app = {
     isPlaying: false,
     isRandom: false,
     isRepeat: false,
+    isOpen: false,
     isHeart: [false, false, false, false, false, false, false, false, false, false],
     config: JSON.parse(localStorage.getItem(PLAYER_STORAGE_KEY)) || {},
     songs: [
@@ -112,22 +114,27 @@ const app = {
                         <h3 class="title">${song.name}</h3>
                         <p class="author">${song.singer}</p>
                     </div>
-                    <div class="option">
+                    <div class="option" data-index="${index}">
                         <i class="fas fa-ellipsis-h"></i>
                         <ul class="option-list">
                             <li class="option-item">
-                                <a href="#" class="option-link option-item-share">
+                                <div href="#" class="option-link option-item-share">
                                     <i class="fas fa-share-alt"></i>
-                                </a>
+                                </div>
                             </li>
                             <li class="option-item">
-                                <a ${song.youtube === '' ? '' : 'target="popup"' } href="${song.youtube}" class="option-link">
+                                <a ${song.youtube !== '#' ? 'target="popup"' : '' } href="${song.youtube}" class="option-link option-item-youtube">
                                     <i class="fab fa-youtube"></i>
                                 </a>
                             </li>
                             <li class="option-item">
                                 <div class="option-link option-item-heart">
                                 ${song.heart === true ? '<i class="fas fa-heart"></i>' : '<i class="far fa-heart"></i>'}
+                                </div>
+                            </li>
+                            <li class="option-item">
+                                <div class="option-link option-item">
+                                    <i class="fas fa-ellipsis-h"></i>
                                 </div>
                             </li>
                         </ul>
@@ -236,17 +243,21 @@ const app = {
         // Lắng nghe hành vi click ở playlist
         playlist.onclick = function(e) {
             const songNode = e.target.closest('.song')
-
-            if (e.target.closest('.option-list')) {
-                if (e.target.closest('.option-item-heart')) {
-                    _this.isHeart[Number(songNode.dataset.index)] = !_this.isHeart[Number(songNode.dataset.index)]
-                    _this.setConfig('isHeart', _this.isHeart)
-                    if (_this.isHeart[Number(songNode.dataset.index)]) 
-                        e.target.closest('.option-item-heart').innerHTML = `<i class="fas fa-heart"></i>`;
-                    else 
-                        e.target.closest('.option-item-heart').innerHTML = `<i class="far fa-heart"></i>`;
-                } else if (e.target.closest('.option-item-share')) {
-                    alert('Coming soon..')
+            const optionNode = e.target.closest('.option')
+            if (e.target.closest('.option')) {
+                _this.isOpen = !_this.isOpen
+                optionNode.classList.toggle('active',_this.isOpen)
+                if (e.target.closest('.option-list')) {
+                    if (e.target.closest('.option-item-heart')) {
+                        _this.isHeart[Number(songNode.dataset.index)] = !_this.isHeart[Number(songNode.dataset.index)]
+                        _this.setConfig('isHeart', _this.isHeart)
+                        if (_this.isHeart[Number(songNode.dataset.index)]) 
+                            e.target.closest('.option-item-heart').innerHTML = `<i class="fas fa-heart"></i>`;
+                        else 
+                            e.target.closest('.option-item-heart').innerHTML = `<i class="far fa-heart"></i>`;
+                    } else if (e.target.closest('.option-item-share')) {
+                        alert('Coming soon..')
+                    }
                 }
             } else {
                     _this.currentIndex = Number(songNode.dataset.index)
